@@ -1,0 +1,6 @@
+@LuckyDog.Admin.IdentityApi_HostAddress = http://localhost:5189
+
+GET {{LuckyDog.Admin.IdentityApi_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###

@@ -64,6 +64,13 @@ namespace LuckyDog.Admin.Business.Base
         #endregion
 
         #region Queryable
+        /// <summary>
+        /// Query By Condition
+        /// </summary>
+        /// <param name="whereExpression">Where Expression</param>
+        /// <param name="orderExpression"></param>
+        /// <param name="orderByType"></param>
+        /// <returns></returns>
         public ISugarQueryable<TEntity> TableWhere(Expression<Func<TEntity, bool>>? whereExpression = null, Expression<Func<TEntity, object>>? orderExpression = null, OrderByType orderByType = OrderByType.Desc)
         {
             return sqlSugarClient.Queryable<TEntity>().WhereIF(whereExpression != null, whereExpression).OrderByIF(orderExpression != null, orderExpression, orderByType);

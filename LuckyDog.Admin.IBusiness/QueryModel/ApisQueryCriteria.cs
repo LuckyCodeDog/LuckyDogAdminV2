@@ -15,16 +15,16 @@ namespace LuckyDog.Admin.IBusiness.QueryModel
         /// <summary>
         /// 组名称
         /// </summary>
-        public string Group { get; set; }
+        public string? Group { get; set; }
 
         /// <summary>
         /// 描述
         /// </summary>
-        public string Description { get; set; }
+        public string? Description { get; set; }
 
         /// <summary>
         /// 请求方法
         /// </summary>
-        public string Method { get; set; }
+        public string? Method { get; set; }
     }
 }

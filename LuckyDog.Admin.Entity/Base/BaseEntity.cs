@@ -22,18 +22,18 @@ namespace LuckyDog.Admin.Entity.Base
         /// 创建时间
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public DateTime CreateTime { get; set; }
+        public DateTime CreateTime { get; set; } =  DateTime.Now;
 
         /// <summary>
         /// 更新者名称
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public string? UpdateBy { get; set; }
+        public string? UpdateBy { get; set; } 
 
         /// <summary>
         /// 最后更新时间
         /// </summary>
         [SugarColumn(IsNullable = true)]
-        public DateTime? UpdateTime { get; set; }
+        public DateTime? UpdateTime { get; set; } = DateTime.Now;
     }
 }

@@ -1,4 +1,5 @@
-﻿using SqlSugar;
+﻿using LuckyDog.Admin.Common.SnowflakeIdHelper;
+using SqlSugar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,6 @@ namespace LuckyDog.Admin.Entity.Base
         /// 主键
         /// </summary>
         [SugarColumn(IsPrimaryKey = true)]
-        public T Id { get; set; }
+        public T? Id { get; set; } 
     }
 }

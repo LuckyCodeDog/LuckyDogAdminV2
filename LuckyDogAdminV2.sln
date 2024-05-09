@@ -11,8 +11,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuckyDog.Admin.Business", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuckyDog.Admin.Common", "LuckyDog.Admin.Common\LuckyDog.Admin.Common.csproj", "{529FAB36-6FB0-4ADD-B88C-7279388DDDD4}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuckyDog.Admin.IdentityApi", "LuckyDog.Admin.IdentityApi\LuckyDog.Admin.IdentityApi.csproj", "{B5A87F67-CE28-448F-BABB-4F0ADF4CE8E0}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuckyDog.Admin.Entity", "LuckyDog.Admin.Entity\LuckyDog.Admin.Entity.csproj", "{9C9FAE34-862E-4D16-A0DF-36ADB589384F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "LuckyDog.Admin.Api", "LuckyDog.Admin.Api\LuckyDog.Admin.Api.csproj", "{9F00F6A1-F372-410E-BFD0-DAD3384CEA72}"
@@ -39,10 +37,6 @@ Global
 		{529FAB36-6FB0-4ADD-B88C-7279388DDDD4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{529FAB36-6FB0-4ADD-B88C-7279388DDDD4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{529FAB36-6FB0-4ADD-B88C-7279388DDDD4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{B5A87F67-CE28-448F-BABB-4F0ADF4CE8E0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{B5A87F67-CE28-448F-BABB-4F0ADF4CE8E0}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{B5A87F67-CE28-448F-BABB-4F0ADF4CE8E0}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{B5A87F67-CE28-448F-BABB-4F0ADF4CE8E0}.Release|Any CPU.Build.0 = Release|Any CPU
 		{9C9FAE34-862E-4D16-A0DF-36ADB589384F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{9C9FAE34-862E-4D16-A0DF-36ADB589384F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{9C9FAE34-862E-4D16-A0DF-36ADB589384F}.Release|Any CPU.ActiveCfg = Release|Any CPU

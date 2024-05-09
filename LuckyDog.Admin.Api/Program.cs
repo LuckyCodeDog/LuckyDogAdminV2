@@ -48,9 +48,9 @@ namespace LuckyDog.Admin.Api
             builder.Services.AddSingleton(new AppSettings(builder.Configuration, builder.Environment));
             builder.Services.Configure<Configs>(configuration);
             var configs =  configuration.Get<Configs>();
-            builder.Services.AddAutoMapper(cfg => cfg.AddProfile(new CustomProfile()));
             builder.Services.AddSqlSugarSetup(configs);
             builder.Services.AddDbSetup();
+            builder.Services.AddAutoMapperSetup();
             builder.Services.AddSwaggerGen();
             builder.Services.AddScoped<ApeContext>();
 

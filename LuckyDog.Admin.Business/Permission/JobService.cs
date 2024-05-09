@@ -1,17 +1,30 @@
 ﻿using LuckyDog.Admin.Business.Base;
+using LuckyDog.Admin.Common.Exception;
 using LuckyDog.Admin.Common.Extention;
 using LuckyDog.Admin.Common.Model;
+using LuckyDog.Admin.Common.Webapp;
 using LuckyDog.Admin.Entity.Permission;
+using LuckyDog.Admin.IBusiness.Base;
 using LuckyDog.Admin.IBusiness.Dto.Permisson;
 using LuckyDog.Admin.IBusiness.Interface.Permission;
 using LuckyDog.Admin.IBusiness.QueryModel;
+using Microsoft.AspNetCore.Http.HttpResults;
 using SqlSugar;
+using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Linq.Expressions;
+using System.Text;
+using System.Threading.Tasks;
 
-namespace LuckyDog.Admin.Api.Controllers.Permission
+namespace LuckyDog.Admin.Business.Permission
 {
-    public class JobService : BaseService<Job>, IJobService
+    public class JobService : BaseService<Job> , IJobService
     {
+        public JobService(ApeContext apeContext) : base(apeContext)
+        {
+
+        }
 
         /// <summary>
         /// Create
@@ -21,7 +34,14 @@ namespace LuckyDog.Admin.Api.Controllers.Permission
         /// <exception cref="NotImplementedException"></exception>
         public async Task<bool> CreateAsync(CreateUpdateJobDto createUpdateJobDto)
         {
-            throw new NotImplementedException();
+            // validate if name exsists 
+            if( await TableWhere(j=>createUpdateJobDto.Name == j.Name ).AnyAsync())
+            {
+                throw  new  BadRequestException($"job name {createUpdateJobDto.Name} has exsisted .");
+            }
+
+            Job job =  ApeContext.Mapper.Map<Job>(createUpdateJobDto);
+            return  await AddEntityAsync(job);
         }
 
         /// <summary>
@@ -32,7 +52,19 @@ namespace LuckyDog.Admin.Api.Controllers.Permission
         /// <exception cref="NotImplementedException"></exception>
         public async Task<bool> DeleteAsync(HashSet<long> ids)
         {
-            throw new NotImplementedException();
+
+            List<Job>  jobs =   await TableWhere(j=> ids.Contains(j.Id)).Includes(x=>x.Users).ToListAsync();
+
+            if (jobs.IsNullOrEmpty())
+            {
+                throw new BadRequestException("Data Does Not Exsist");
+            }
+
+            if( jobs.Any(j=> j.Users.Count>0 && j.Users!=null) ) 
+            {
+                throw new BadRequestException("Please Delete Asociation Users First");
+            }
+            return await LogicDelete<Job>(j=>ids.Contains(j.Id))>0;
         }
 
         /// <summary>
@@ -43,7 +75,23 @@ namespace LuckyDog.Admin.Api.Controllers.Permission
         /// <exception cref="NotImplementedException"></exception>
         public async Task<bool> UpdateAsync(CreateUpdateJobDto createUpdateJobDto)
         {
-            throw new NotImplementedException();
+            var oldJob = await TableWhere(j=>j.Id == createUpdateJobDto.Id).FirstAsync();
+
+            if(oldJob.IsNull())
+            {
+                throw new  BadRequestException("Data Does Not Exsist");
+            }
+            
+            if(oldJob.Name!= createUpdateJobDto?.Name && await TableWhere(j=>j.Name ==createUpdateJobDto.Name).AnyAsync()) 
+            {
+
+                throw new BadRequestException("Job Name Has Exsisted.");
+            }
+
+            var job = ApeContext.Mapper.Map<Job>(createUpdateJobDto);
+
+            return await UpdateEntityAsync(job);
+
         }
 
 
@@ -66,7 +114,14 @@ namespace LuckyDog.Admin.Api.Controllers.Permission
         /// <exception cref="NotImplementedException"></exception>
         public async Task<List<JobDto>> QueryAsync(JobQueryCriteria jobQueryCriteria, Pagination pagination)
         {
-             Expression<Func<Job,bool>> where =  GetWhereExpression(jobQueryCriteria);
+            Expression<Func<Job, bool>> whereExpression = GetWhereExpression(jobQueryCriteria);
+
+            List<Job> jobs = await SugarRepository.QueryPageListAsync(whereExpression, pagination);
+
+
+            return ApeContext.Mapper.Map<List<JobDto>>(jobs);
+             
+
         }
 
 
@@ -91,17 +146,16 @@ namespace LuckyDog.Admin.Api.Controllers.Permission
         {
 
             Expressionable<Job> expressionable = Expressionable.Create<Job>();
-            
-            expressionable.And(j=>true);
 
-            expressionable.AndIF(!jobQueryCriteria.JobName.IsNullOrEmpty(), j=> j.Name.Contains(jobQueryCriteria.JobName));
+            expressionable.And(j => true);
+
+            expressionable.AndIF(!jobQueryCriteria.JobName.IsNullOrEmpty(), j => j.Name.Contains(jobQueryCriteria.JobName));
 
             expressionable.AndIF(!jobQueryCriteria.Enabled.IsNullOrEmpty(), j => j.Enabled == jobQueryCriteria.Enabled);
 
-            expressionable.AndIF(!jobQueryCriteria.CreateTime.IsNullOrEmpty(), j=> j.CreateTime >= jobQueryCriteria.CreateTime[0] && j.CreateTime <= jobQueryCriteria.CreateTime[1]);
+            expressionable.AndIF(!jobQueryCriteria.CreateTime.IsNullOrEmpty(), j => j.CreateTime >= jobQueryCriteria.CreateTime[0] && j.CreateTime <= jobQueryCriteria.CreateTime[1]);
 
             return expressionable.ToExpression();
         }
-      
     }
 }

@@ -42,7 +42,7 @@ namespace LuckyDog.Admin.Business.Permission
                 throw new BadRequestException("Path has exsisted.");
              }
              Apis api =   ApeContext.Mapper.Map<Apis>(createUpdateApisDto);
-
+             
             api.Id =IdHelper.GetLongId();
 
             api.CreateTime = DateTime.Now;

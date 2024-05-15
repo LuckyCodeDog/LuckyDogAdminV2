@@ -23,8 +23,8 @@ namespace LuckyDog.Admin.Business.Permission
 
         #region Constructor
         public DepartmentService(ApeContext apeContext) : base(apeContext)
-        {
-
+        { 
+        
         }
         #endregion
 
@@ -55,12 +55,12 @@ namespace LuckyDog.Admin.Business.Permission
                 {
                     var count = await TableWhere(d => d.ParentId == parentDep.ParentId).CountAsync();
                     dep.SubCount = count;
-
-                    await UpdateEntityAsync(dep);
+                    
+                   await UpdateEntityAsync(dep);
                 }
 
             }
-
+            
 
             return true;
         }
@@ -112,13 +112,13 @@ namespace LuckyDog.Admin.Business.Permission
                 departments = await SugarRepository.QueryListAsync(expression);
             }
 
+            
+             pagination.TotalElements = departments.Count;
 
-            pagination.TotalElements = departments.Count;
-
-            List<DepartmentDto> departmentDtos = ApeContext.Mapper.Map<List<DepartmentDto>>(departments);
+             List<DepartmentDto> departmentDtos = ApeContext.Mapper.Map<List<DepartmentDto>>(departments);
 
             return departmentDtos;
-
+                
         }
 
         public async Task<bool> UpdateAsync(CreateUpdateDepartmentDto createUpdateDepartmentDto)
@@ -158,12 +158,12 @@ namespace LuckyDog.Admin.Business.Permission
                     var parentDep = await TableWhere(d => d.Id == depToUpdate.ParentId).FirstAsync();
                     parentDep.SubCount = childCount;
                     await UpdateEntityAsync(parentDep);
-                }
+        }
 
                 // need to maintain old parent subcount
 
                 if (oldDep.ParentId != 0)
-                {
+        {
                     var childCount = await TableWhere(d => d.ParentId == oldDep.ParentId).CountAsync();
                     var oldParentDep = await TableWhere(d => d.Id == oldDep.ParentId).FirstAsync();
                     oldDep.SubCount = childCount;
@@ -204,7 +204,7 @@ namespace LuckyDog.Admin.Business.Permission
             Expressionable<Department> expressionable = Expressionable.Create<Department>();
 
             expressionable.And(d => true);
-
+             
             expressionable.AndIF(deptQueryCriteria.ParentId.IsNotNull(), d => d.ParentId == deptQueryCriteria.ParentId);
 
             expressionable.AndIF(deptQueryCriteria.ParentId.IsNull(), d => d.ParentId == 0);
@@ -215,7 +215,7 @@ namespace LuckyDog.Admin.Business.Permission
 
             expressionable.AndIF(!deptQueryCriteria.CreateTime.IsNullOrEmpty() && deptQueryCriteria.CreateTime.Count == 2,
                 d => d.CreateTime >= deptQueryCriteria.CreateTime[0] && d.CreateTime <= deptQueryCriteria.CreateTime[1]);
-
+            
             return expressionable.ToExpression();
 
         }
